@@ -14,7 +14,6 @@ public class MainActivity extends AppCompatActivity {
     private Spinner mCountriesSpinner;
     private Spinner mCitiesSpinner;
     private Spinner mHouseNumberSpinner;
-    private Button mShowAddressBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,18 +23,28 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initViews() {
+        /* Countries */
         mCountriesSpinner = findViewById(R.id.countriesSpinner);
+
+        /* Cities */
         mCitiesSpinner = findViewById(R.id.citiesSpinner);
+
+        /* Houses */
         mHouseNumberSpinner = findViewById(R.id.houseNumberSpinner);
-        mShowAddressBtn = findViewById(R.id.showAddressBtn);
+
+        /* Show address */
+        Button mShowAddressBtn = findViewById(R.id.showAddressBtn);
         mShowAddressBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(MainActivity.this,
-                        mCountriesSpinner.getSelectedItem().toString() + " "
-                                + mCitiesSpinner.getSelectedItem().toString() + " "
-                                + mHouseNumberSpinner.getSelectedItem().toString(),
-                        Toast.LENGTH_LONG).show();
+                String result = String.format(
+                        "%s, %s, %s",
+                        mCountriesSpinner.getSelectedItem().toString(),
+                        mCitiesSpinner.getSelectedItem().toString(),
+                        mHouseNumberSpinner.getSelectedItem().toString()
+                );
+
+                Toast.makeText(MainActivity.this, result, Toast.LENGTH_LONG).show();
             }
         });
 
@@ -50,9 +59,9 @@ public class MainActivity extends AppCompatActivity {
 
         mCountriesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+            public void onItemSelected(AdapterView adapterView, View view, int position, long id) {
                 String[] countries = getResources().getStringArray(R.array.countries);
-                initSpinnerCities(countries[i]);
+                initSpinnerCities(countries[position]);
             }
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
@@ -84,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
         for (int i = 1; i <= 50; i++) {
             houseNumbers[i - 1] = i;
         }
-        ArrayAdapter<Integer> adapter = new ArrayAdapter<Integer>(this, android.R.layout.simple_spinner_item, houseNumbers);
+        ArrayAdapter<Integer> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, houseNumbers);
         mHouseNumberSpinner.setAdapter(adapter);
     }
 }
